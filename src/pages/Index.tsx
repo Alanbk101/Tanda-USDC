@@ -130,7 +130,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="border-t border-border/50 py-6 mt-12">
         <div className="container px-4 text-center text-sm text-muted-foreground">
-          <p>CryptoPool — Decentralized Rotating Savings</p>
+          <p>Tanda USDC — Decentralized Rotating Savings</p>
         </div>
       </footer>
     </div>
