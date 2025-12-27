@@ -15,13 +15,13 @@ export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="container flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-              <span className="text-primary-foreground font-display font-bold text-sm">CP</span>
-            </div>
-            <span className="font-display font-bold text-xl hidden sm:inline">
-              CryptoPool
-            </span>
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+            <span className="text-primary-foreground font-display font-bold text-sm">T</span>
+          </div>
+          <span className="font-display font-bold text-xl hidden sm:inline">
+            Tanda USDC
+          </span>
           </div>
         </div>
 
