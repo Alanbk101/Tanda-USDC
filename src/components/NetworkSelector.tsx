@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-type Network = "solana" | "ethereum" | "polygon" | "arbitrum";
+type Network = "solana" | "base";
 
 interface NetworkOption {
   id: Network;
@@ -13,9 +13,7 @@ interface NetworkOption {
 
 const networks: NetworkOption[] = [
   { id: "solana", name: "Solana", icon: "◎", color: "text-accent" },
-  { id: "ethereum", name: "Ethereum", icon: "Ξ", color: "text-ethereum" },
-  { id: "polygon", name: "Polygon", icon: "⬡", color: "text-purple-400" },
-  { id: "arbitrum", name: "Arbitrum", icon: "◆", color: "text-blue-400" },
+  { id: "base", name: "Base", icon: "🔵", color: "text-blue-500" },
 ];
 
 interface NetworkSelectorProps {
