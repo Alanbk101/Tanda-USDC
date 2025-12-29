@@ -36,7 +36,7 @@ const mockPayouts = [
 ];
 
 const Index = () => {
-  const [selectedNetwork, setSelectedNetwork] = useState<"solana" | "ethereum" | "polygon" | "arbitrum">("solana");
+  const [selectedNetwork, setSelectedNetwork] = useState<"solana" | "base">("solana");
 
   return (
     <div className="min-h-screen bg-background">
