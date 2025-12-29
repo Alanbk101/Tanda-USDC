@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Space Grotesk', 'system-ui', 'sans-serif'],
+        sans: ['Montserrat', 'system-ui', 'sans-serif'],
+        display: ['Playfair Display', 'Georgia', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -54,6 +54,9 @@ export default {
         solana: "hsl(var(--solana))",
         ethereum: "hsl(var(--ethereum))",
         usdc: "hsl(var(--usdc))",
+        "mexican-green": "hsl(var(--mexican-green))",
+        "mexican-red": "hsl(var(--mexican-red))",
+        gold: "hsl(var(--gold))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
