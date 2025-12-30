@@ -59,8 +59,8 @@ function MexicanEagle({ className }: { className?: string }) {
 }
 
 interface HeaderProps {
-  selectedNetwork: "solana" | "base";
-  onNetworkChange: (network: "solana" | "base") => void;
+  selectedNetwork: "base";
+  onNetworkChange: (network: "base") => void;
 }
 
 export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
