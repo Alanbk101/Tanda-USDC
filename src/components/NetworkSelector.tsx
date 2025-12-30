@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-type Network = "solana" | "base";
+type Network = "base";
 
 interface NetworkOption {
   id: Network;
@@ -12,7 +12,6 @@ interface NetworkOption {
 }
 
 const networks: NetworkOption[] = [
-  { id: "solana", name: "Solana", icon: "◎", color: "text-accent" },
   { id: "base", name: "Base", icon: "🔵", color: "text-blue-500" },
 ];
 
