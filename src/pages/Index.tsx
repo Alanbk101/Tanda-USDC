@@ -4,6 +4,7 @@ import { PoolStats } from "@/components/PoolStats";
 import { MemberList } from "@/components/MemberList";
 import { PayoutSchedule } from "@/components/PayoutSchedule";
 import { ContributeModal } from "@/components/ContributeModal";
+import { PaperEaglesBackground } from "@/components/PaperEaglesBackground";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Coins, Shield, Zap } from "lucide-react";
@@ -50,8 +51,9 @@ const Index = () => {
 
       <main className="container px-4 py-8 relative">
         {/* Hero Section */}
-        <section className="mb-12">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <section className="mb-12 relative">
+          <PaperEaglesBackground />
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative z-10">
             <div className="space-y-3">
               <Badge variant="outline" className="gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
