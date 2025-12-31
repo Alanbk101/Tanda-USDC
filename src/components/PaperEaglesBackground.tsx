@@ -10,6 +10,7 @@ interface PaperEagle {
   wingSpeed: number;
   rotation: number;
   opacity: number;
+  colorType: "green" | "white" | "red";
 }
 
 export function PaperEaglesBackground() {
@@ -30,7 +31,8 @@ export function PaperEaglesBackground() {
         );
         canvas.style("display", "block");
 
-        // Initialize eagles
+        // Initialize eagles with Mexican flag colors
+        const colors: ("green" | "white" | "red")[] = ["green", "white", "red"];
         for (let i = 0; i < numEagles; i++) {
           eagles.push({
             x: p.random(p.width),
@@ -40,7 +42,8 @@ export function PaperEaglesBackground() {
             wingAngle: p.random(p.TWO_PI),
             wingSpeed: p.random(0.05, 0.12),
             rotation: p.random(-0.2, 0.2),
-            opacity: p.random(40, 80),
+            opacity: p.random(60, 100),
+            colorType: colors[i % 3],
           });
         }
       };
@@ -60,6 +63,22 @@ export function PaperEaglesBackground() {
             eagle.y = p.random(p.height);
           }
 
+          // Get color based on eagle type (Mexican flag colors)
+          const getColor = (type: "green" | "white" | "red", alpha: number): [number, number, number, number] => {
+            switch (type) {
+              case "green":
+                return [0, 104, 71, alpha]; // Mexican green
+              case "white":
+                return [255, 255, 255, alpha];
+              case "red":
+                return [206, 17, 38, alpha]; // Mexican red
+            }
+          };
+
+          const mainColor = getColor(eagle.colorType, eagle.opacity);
+          const bodyColor = getColor(eagle.colorType, eagle.opacity + 30);
+          const accentColor = getColor(eagle.colorType, eagle.opacity + 15);
+
           // Draw paper eagle (origami style)
           p.push();
           p.translate(eagle.x, eagle.y);
@@ -69,7 +88,7 @@ export function PaperEaglesBackground() {
 
           // Body - main triangle
           p.noStroke();
-          p.fill(255, 255, 255, eagle.opacity);
+          p.fill(...mainColor);
 
           // Left wing
           p.push();
@@ -92,7 +111,7 @@ export function PaperEaglesBackground() {
           p.pop();
 
           // Body center
-          p.fill(245, 245, 245, eagle.opacity + 20);
+          p.fill(...bodyColor);
           p.beginShape();
           p.vertex(-eagle.size * 0.3, 0);
           p.vertex(0, -eagle.size * 0.5);
@@ -101,7 +120,7 @@ export function PaperEaglesBackground() {
           p.endShape(p.CLOSE);
 
           // Head
-          p.fill(255, 255, 255, eagle.opacity + 10);
+          p.fill(...accentColor);
           p.beginShape();
           p.vertex(0, -eagle.size * 0.5);
           p.vertex(-eagle.size * 0.15, -eagle.size * 0.3);
@@ -110,7 +129,7 @@ export function PaperEaglesBackground() {
           p.endShape(p.CLOSE);
 
           // Tail feathers
-          p.fill(240, 240, 240, eagle.opacity);
+          p.fill(...mainColor);
           p.beginShape();
           p.vertex(-eagle.size * 0.2, eagle.size * 0.5);
           p.vertex(0, eagle.size * 0.6);
