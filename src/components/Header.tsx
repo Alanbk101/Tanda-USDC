@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { NetworkSelector } from "@/components/NetworkSelector";
 import { SettingsMenu } from "@/components/SettingsMenu";
-import { Wallet, Menu } from "lucide-react";
+import { Wallet, Menu, LayoutDashboard } from "lucide-react";
 import { useState } from "react";
 import { useSettings } from "@/contexts/SettingsContext";
 
@@ -130,6 +130,14 @@ export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
         </div>
 
         <div className="flex items-center gap-3">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-2"
+          >
+            <LayoutDashboard className="w-4 h-4" />
+            <span className="hidden sm:inline">Dashboard</span>
+          </Button>
           <Button
             variant={isConnected ? "outline" : "gradient"}
             size="sm"
