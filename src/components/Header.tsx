@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { NetworkSelector } from "@/components/NetworkSelector";
+import { SettingsMenu } from "@/components/SettingsMenu";
 import { Wallet, Menu } from "lucide-react";
 import { useState } from "react";
+import { useSettings } from "@/contexts/SettingsContext";
 
 // Modern geometric pattern background component with Mexican flag colors
 function NavbarPattern() {
@@ -105,6 +107,7 @@ interface HeaderProps {
 
 export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
   const [isConnected, setIsConnected] = useState(false);
+  const { t } = useSettings();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl relative">
@@ -127,6 +130,7 @@ export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
         </div>
 
         <div className="flex items-center gap-3">
+          <SettingsMenu />
           <Button
             variant={isConnected ? "outline" : "gradient"}
             size="sm"
@@ -137,7 +141,7 @@ export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
             {isConnected ? (
               <span className="font-mono">0x7a3d...8f2e</span>
             ) : (
-              "Connect Wallet"
+              t("connectWallet")
             )}
           </Button>
           <Button variant="ghost" size="icon" className="md:hidden">
