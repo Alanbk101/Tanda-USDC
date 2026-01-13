@@ -8,6 +8,7 @@ import { PaperEaglesBackground } from "@/components/PaperEaglesBackground";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Coins, Shield, Zap } from "lucide-react";
+import { useSettings } from "@/contexts/SettingsContext";
 
 // Mock data
 const mockMembers = [
@@ -38,6 +39,25 @@ const mockPayouts = [
 
 const Index = () => {
   const [selectedNetwork, setSelectedNetwork] = useState<"base">("base");
+  const { t } = useSettings();
+
+  const features = [
+    {
+      icon: Coins,
+      titleKey: "stablecoinOnly",
+      descKey: "stablecoinDesc",
+    },
+    {
+      icon: Shield,
+      titleKey: "onChainSecurity",
+      descKey: "onChainDesc",
+    },
+    {
+      icon: Zap,
+      titleKey: "multiChain",
+      descKey: "multiChainDesc",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -57,13 +77,13 @@ const Index = () => {
             <div className="space-y-3">
               <Badge variant="outline" className="gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                Pool Active
+                {t("poolActive")}
               </Badge>
               <h1 className="font-display text-4xl md:text-5xl font-bold">
-                <span className="gradient-text">Savings Pool</span>
+                <span className="gradient-text">{t("savingsPool")}</span>
               </h1>
               <p className="text-muted-foreground text-lg max-w-xl">
-                Join 10 members contributing 15 USDC weekly. Each month, one member receives the full pool of 600 USDC.
+                {t("poolDescription")}
               </p>
             </div>
             <ContributeModal amount={15} network={selectedNetwork} />
@@ -73,25 +93,9 @@ const Index = () => {
         {/* Features */}
         <section className="mb-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              {
-                icon: Coins,
-                title: "Stablecoin Only",
-                description: "USDC contributions for zero volatility",
-              },
-              {
-                icon: Shield,
-                title: "On-Chain Security",
-                description: "Smart contract ensures fair payouts",
-              },
-              {
-                icon: Zap,
-                title: "Multi-Chain",
-                description: "Support for Solana & EVM networks",
-              },
-            ].map((feature, index) => (
+            {features.map((feature, index) => (
               <Card
-                key={feature.title}
+                key={feature.titleKey}
                 variant="glass"
                 className="animate-fade-in hover:border-primary/30 transition-colors cursor-default"
                 style={{ animationDelay: `${index * 100}ms` }}
@@ -101,8 +105,8 @@ const Index = () => {
                     <feature.icon className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-display font-semibold mb-1">{feature.title}</h3>
-                    <p className="text-sm text-muted-foreground">{feature.description}</p>
+                    <h3 className="font-display font-semibold mb-1">{t(feature.titleKey)}</h3>
+                    <p className="text-sm text-muted-foreground">{t(feature.descKey)}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -132,7 +136,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="border-t border-border/50 py-6 mt-12">
         <div className="container px-4 text-center text-sm text-muted-foreground">
-          <p>Tanda USDC — Decentralized Rotating Savings</p>
+          <p>{t("footerText")}</p>
         </div>
       </footer>
     </div>

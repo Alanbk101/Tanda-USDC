@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Users, Coins, Calendar, TrendingUp } from "lucide-react";
+import { useSettings } from "@/contexts/SettingsContext";
 
 interface PoolStatsProps {
   totalMembers: number;
@@ -19,31 +20,32 @@ export function PoolStats({
   monthlyPool,
   nextPayoutDate,
 }: PoolStatsProps) {
+  const { t } = useSettings();
   const progress = (currentWeek / totalWeeks) * 100;
 
   const stats = [
     {
-      label: "Pool Members",
+      label: t("poolMembers"),
       value: totalMembers,
       icon: Users,
-      suffix: "members",
+      suffix: t("members"),
     },
     {
-      label: "Weekly Contribution",
+      label: t("weeklyContribution"),
       value: weeklyContribution,
       icon: Coins,
       prefix: "$",
       suffix: "USDC",
     },
     {
-      label: "Monthly Pool",
+      label: t("monthlyPool"),
       value: monthlyPool,
       icon: TrendingUp,
       prefix: "$",
       suffix: "USDC",
     },
     {
-      label: "Next Payout",
+      label: t("nextPayout"),
       value: nextPayoutDate,
       icon: Calendar,
       isDate: true,
@@ -88,14 +90,14 @@ export function PoolStats({
       <Card variant="glass" className="animate-fade-in" style={{ animationDelay: "400ms" }}>
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-sm text-muted-foreground">Pool Cycle Progress</span>
+            <span className="text-sm text-muted-foreground">{t("poolCycleProgress")}</span>
             <span className="text-sm font-medium">
-              Week {currentWeek} of {totalWeeks}
+              {t("week")} {currentWeek} {t("of")} {totalWeeks}
             </span>
           </div>
           <Progress value={progress} variant="gradient" className="h-2" />
           <p className="text-xs text-muted-foreground mt-2">
-            {totalWeeks - currentWeek} weeks remaining in this cycle
+            {totalWeeks - currentWeek} {t("weeksRemaining")}
           </p>
         </CardContent>
       </Card>
