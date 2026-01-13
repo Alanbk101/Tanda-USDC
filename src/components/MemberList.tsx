@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Check, Clock, Crown } from "lucide-react";
 import { useSettings } from "@/contexts/SettingsContext";
 
@@ -11,6 +11,7 @@ interface Member {
   hasPaid: boolean;
   payoutMonth: number;
   hasReceivedPayout: boolean;
+  avatar?: string;
 }
 
 interface MemberListProps {
@@ -44,6 +45,7 @@ export function MemberList({ members, currentMonth }: MemberListProps) {
             >
               <div className="flex items-center gap-3">
                 <Avatar className="h-10 w-10 border-2 border-border">
+                  {member.avatar && <AvatarImage src={member.avatar} alt={member.name} />}
                   <AvatarFallback className="bg-gradient-to-br from-primary/20 to-accent/20 font-display">
                     {member.name.slice(0, 2).toUpperCase()}
                   </AvatarFallback>
