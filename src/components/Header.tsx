@@ -130,7 +130,6 @@ export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
         </div>
 
         <div className="flex items-center gap-3">
-          <SettingsMenu />
           <Button
             variant={isConnected ? "outline" : "gradient"}
             size="sm"
@@ -144,6 +143,7 @@ export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
               t("connectWallet")
             )}
           </Button>
+          <SettingsMenu />
           <Button variant="ghost" size="icon" className="md:hidden">
             <Menu className="w-5 h-5" />
           </Button>
