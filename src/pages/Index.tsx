@@ -18,6 +18,7 @@ import user6Avatar from "@/assets/user6-avatar.jpg";
 import user7Avatar from "@/assets/user7-avatar.jpg";
 import user8Avatar from "@/assets/user8-avatar.jpg";
 import user9Avatar from "@/assets/user9-avatar.jpg";
+import user10Avatar from "@/assets/user10-avatar.jpg";
 
 // Mock data
 const mockMembers = [
@@ -30,7 +31,7 @@ const mockMembers = [
   { id: "7", name: "User 7", wallet: "0x3a9d4e8f5c7b1a0d2e6c8f0a2d4f6b8c0e2a4d6e", hasPaid: false, payoutMonth: 7, hasReceivedPayout: false, avatar: user7Avatar },
   { id: "8", name: "User 8", wallet: "0x4b0e5f9a6d8c2b1e3f7d9a1b3e5a7c9d1f3b5d7f", hasPaid: true, payoutMonth: 8, hasReceivedPayout: false, avatar: user8Avatar },
   { id: "9", name: "User 9", wallet: "0x5c1f6a0b7e9d3c2f4a8e0b2c4f6a8d0e2b4d6f8a", hasPaid: true, payoutMonth: 9, hasReceivedPayout: false, avatar: user9Avatar },
-  { id: "10", name: "User 10", wallet: "0x6d2a7b1c8f0e4d3a5b9f1c3d5a7b9e1f3c5e7a9b", hasPaid: false, payoutMonth: 10, hasReceivedPayout: false },
+  { id: "10", name: "User 10", wallet: "0x6d2a7b1c8f0e4d3a5b9f1c3d5a7b9e1f3c5e7a9b", hasPaid: false, payoutMonth: 10, hasReceivedPayout: false, avatar: user10Avatar },
 ];
 
 const mockPayouts = [
