@@ -3,6 +3,7 @@ import { NetworkSelector } from "@/components/NetworkSelector";
 import { SettingsMenu } from "@/components/SettingsMenu";
 import { Wallet, Menu, LayoutDashboard } from "lucide-react";
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useSettings } from "@/contexts/SettingsContext";
 
 // Modern geometric pattern background component with Mexican flag colors
@@ -108,13 +109,20 @@ interface HeaderProps {
 export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
   const [isConnected, setIsConnected] = useState(false);
   const { t } = useSettings();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isDashboard = location.pathname === "/dashboard";
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl relative">
       <NavbarPattern />
       <div className="container flex h-16 items-center justify-between px-4 relative z-10">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-3">
+          <div 
+            className="flex items-center gap-3 cursor-pointer" 
+            onClick={() => navigate("/")}
+          >
             <MexicanEagle className="w-10 h-10 drop-shadow-md" />
             <span className="font-display font-bold text-xl hidden sm:inline bg-gradient-to-r from-mexican-green via-foreground to-mexican-red bg-clip-text text-transparent">
               Tanda USDC
@@ -131,9 +139,10 @@ export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
 
         <div className="flex items-center gap-3">
           <Button
-            variant="ghost"
+            variant={isDashboard ? "secondary" : "ghost"}
             size="sm"
             className="gap-2"
+            onClick={() => navigate("/dashboard")}
           >
             <LayoutDashboard className="w-4 h-4" />
             <span className="hidden sm:inline">Dashboard</span>
