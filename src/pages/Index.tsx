@@ -9,10 +9,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Coins, Shield, Zap } from "lucide-react";
 import { useSettings } from "@/contexts/SettingsContext";
+import user1Avatar from "@/assets/user1-avatar.jpg";
 
 // Mock data
 const mockMembers = [
-  { id: "1", name: "User 1", wallet: "0x7a3d8f2e9c1b5a4d6e8f0c2b4a6d8e0f2c4b6a8d", hasPaid: true, payoutMonth: 1, hasReceivedPayout: true },
+  { id: "1", name: "User 1", wallet: "0x7a3d8f2e9c1b5a4d6e8f0c2b4a6d8e0f2c4b6a8d", hasPaid: true, payoutMonth: 1, hasReceivedPayout: true, avatar: user1Avatar },
   { id: "2", name: "User 2", wallet: "0x8b4e9f3a0d2c6b5e7f1d3c5a7b9d1e3f5a7c9b1d", hasPaid: true, payoutMonth: 2, hasReceivedPayout: true },
   { id: "3", name: "User 3", wallet: "0x9c5f0a4b1e3d7c6f8a2e4d6b8c0f2a4d6e8a0c2e", hasPaid: true, payoutMonth: 3, hasReceivedPayout: false },
   { id: "4", name: "User 4", wallet: "0x0d6a1b5c2f4e8d7a9b3f5e7c9d1a3b5d7f9b1d3f", hasPaid: false, payoutMonth: 4, hasReceivedPayout: false },
