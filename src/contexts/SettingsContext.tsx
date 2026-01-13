@@ -256,7 +256,7 @@ const translations: Record<Language, Record<string, string>> = {
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
-  const [darkMode, setDarkModeState] = useState(true);
+  const [darkMode, setDarkModeState] = useState(false);
   const [testnetMode, setTestnetMode] = useState(false);
   const [language, setLanguage] = useState<Language>("en");
   const [watchWallet, setWatchWallet] = useState("");
