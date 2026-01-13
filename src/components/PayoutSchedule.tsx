@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, Circle, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSettings } from "@/contexts/SettingsContext";
 
 interface PayoutMonth {
   month: number;
@@ -16,10 +17,12 @@ interface PayoutScheduleProps {
 }
 
 export function PayoutSchedule({ payouts }: PayoutScheduleProps) {
+  const { t } = useSettings();
+
   return (
     <Card variant="glass" className="animate-fade-in" style={{ animationDelay: "600ms" }}>
       <CardHeader>
-        <CardTitle>Payout Rotation</CardTitle>
+        <CardTitle>{t("payoutRotation")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="relative">
@@ -53,7 +56,7 @@ export function PayoutSchedule({ payouts }: PayoutScheduleProps) {
                   <div>
                     <p className="font-medium">{payout.memberName}</p>
                     <p className="text-xs text-muted-foreground">
-                      Month {payout.month}
+                      {t("month")} {payout.month}
                     </p>
                   </div>
                   <div className="text-right">
@@ -64,10 +67,10 @@ export function PayoutSchedule({ payouts }: PayoutScheduleProps) {
                       </span>
                     </p>
                     {payout.isCurrent && (
-                      <Badge variant="success" className="mt-1">Next Payout</Badge>
+                      <Badge variant="success" className="mt-1">{t("nextPayoutBadge")}</Badge>
                     )}
                     {payout.isPaid && (
-                      <Badge variant="secondary" className="mt-1">Completed</Badge>
+                      <Badge variant="secondary" className="mt-1">{t("completed")}</Badge>
                     )}
                   </div>
                 </div>

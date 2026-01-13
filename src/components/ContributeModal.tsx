@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Coins, Wallet, ArrowRight, Check } from "lucide-react";
 import { toast } from "sonner";
+import { useSettings } from "@/contexts/SettingsContext";
 
 interface ContributeModalProps {
   amount: number;
@@ -21,6 +22,7 @@ interface ContributeModalProps {
 export function ContributeModal({ amount, network }: ContributeModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<"confirm" | "processing" | "success">("confirm");
+  const { t } = useSettings();
 
   const handleContribute = async () => {
     setStep("processing");
@@ -29,8 +31,8 @@ export function ContributeModal({ amount, network }: ContributeModalProps) {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     
     setStep("success");
-    toast.success("Contribution successful!", {
-      description: `You have contributed ${amount} USDC to the pool.`,
+    toast.success(t("contributionSuccess"), {
+      description: t("contributionSuccessDesc").replace("{amount}", String(amount)),
     });
     
     setTimeout(() => {
@@ -46,18 +48,18 @@ export function ContributeModal({ amount, network }: ContributeModalProps) {
       <DialogTrigger asChild>
         <Button variant="gradient" size="lg" className="gap-2">
           <Coins className="w-5 h-5" />
-          Contribute Now
+          {t("contributeNow")}
         </Button>
       </DialogTrigger>
       <DialogContent className="glass-card border-border sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="font-display text-xl">
-            {step === "success" ? "Contribution Complete!" : "Weekly Contribution"}
+            {step === "success" ? t("contributionComplete") : t("weeklyContributionTitle")}
           </DialogTitle>
           <DialogDescription>
             {step === "success" 
-              ? "Your contribution has been recorded on-chain."
-              : "Confirm your weekly contribution to the savings pool."}
+              ? t("contributionRecorded")
+              : t("confirmContributionDesc")}
           </DialogDescription>
         </DialogHeader>
 
@@ -69,7 +71,7 @@ export function ContributeModal({ amount, network }: ContributeModalProps) {
                   <Coins className="w-5 h-5 text-usdc" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Amount</p>
+                  <p className="text-sm text-muted-foreground">{t("amount")}</p>
                   <p className="font-display font-bold text-xl">{amount} USDC</p>
                 </div>
               </div>
@@ -82,7 +84,7 @@ export function ContributeModal({ amount, network }: ContributeModalProps) {
                   <Wallet className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">From Wallet</p>
+                  <p className="text-sm text-muted-foreground">{t("fromWallet")}</p>
                   <p className="font-mono text-sm">0x7a3d...8f2e</p>
                 </div>
               </div>
@@ -93,7 +95,7 @@ export function ContributeModal({ amount, network }: ContributeModalProps) {
         {step === "processing" && (
           <div className="py-8 flex flex-col items-center gap-4">
             <div className="w-16 h-16 rounded-full border-4 border-primary/30 border-t-primary animate-spin" />
-            <p className="text-muted-foreground">Processing transaction...</p>
+            <p className="text-muted-foreground">{t("processingTransaction")}</p>
           </div>
         )}
 
@@ -102,14 +104,14 @@ export function ContributeModal({ amount, network }: ContributeModalProps) {
             <div className="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center">
               <Check className="w-8 h-8 text-emerald-400" />
             </div>
-            <p className="text-emerald-400 font-medium">Transaction Confirmed</p>
+            <p className="text-emerald-400 font-medium">{t("transactionConfirmed")}</p>
           </div>
         )}
 
         <DialogFooter>
           {step === "confirm" && (
             <Button onClick={handleContribute} variant="gradient" className="w-full gap-2">
-              Confirm Contribution
+              {t("confirmContribution")}
               <ArrowRight className="w-4 h-4" />
             </Button>
           )}

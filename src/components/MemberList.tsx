@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Check, Clock, Crown } from "lucide-react";
+import { useSettings } from "@/contexts/SettingsContext";
 
 interface Member {
   id: string;
@@ -18,11 +19,13 @@ interface MemberListProps {
 }
 
 export function MemberList({ members, currentMonth }: MemberListProps) {
+  const { t } = useSettings();
+
   return (
     <Card variant="glass" className="animate-fade-in" style={{ animationDelay: "500ms" }}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <span>Pool Members</span>
+          <span>{t("poolMembers")}</span>
           <Badge variant="secondary">{members.length}/10</Badge>
         </CardTitle>
       </CardHeader>
@@ -60,19 +63,19 @@ export function MemberList({ members, currentMonth }: MemberListProps) {
 
               <div className="flex items-center gap-3">
                 <div className="text-right">
-                  <p className="text-xs text-muted-foreground">Payout</p>
-                  <p className="text-sm font-medium">Month {member.payoutMonth}</p>
+                  <p className="text-xs text-muted-foreground">{t("payout")}</p>
+                  <p className="text-sm font-medium">{t("month")} {member.payoutMonth}</p>
                 </div>
                 
                 {member.hasPaid ? (
                   <Badge variant="success" className="gap-1">
                     <Check className="w-3 h-3" />
-                    Paid
+                    {t("paid")}
                   </Badge>
                 ) : (
                   <Badge variant="pending" className="gap-1">
                     <Clock className="w-3 h-3" />
-                    Pending
+                    {t("pending")}
                   </Badge>
                 )}
               </div>
