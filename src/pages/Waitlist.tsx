@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Mail, CheckCircle, Users, Shield, Coins } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { MexicanEagle } from "@/components/MexicanEagle";
 
 export default function Waitlist() {
   const [email, setEmail] = useState("");
@@ -44,6 +45,7 @@ export default function Waitlist() {
             className="flex items-center gap-3 cursor-pointer"
             onClick={() => navigate("/")}
           >
+            <MexicanEagle className="w-10 h-10 drop-shadow-md" />
             <span className="font-display font-bold text-xl bg-gradient-to-r from-mexican-green via-foreground to-mexican-red bg-clip-text text-transparent">
               Tanda USDC
             </span>
