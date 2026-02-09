@@ -69,12 +69,15 @@ export function useTanda() {
   });
 
   const approveUSDC = async (amount: bigint) => {
+    if (!address) return;
     return approveWrite({
       address: usdcAddress,
       abi: USDC_ABI,
       functionName: 'approve',
       args: [contractAddress, amount],
-    });
+      account: address,
+      chain: undefined,
+    } as any);
   };
 
   // Escribir: Depositar semana actual
@@ -89,21 +92,27 @@ export function useTanda() {
   });
 
   const depositCurrentWeek = async () => {
+    if (!address) return;
     return depositWrite({
       address: contractAddress,
       abi: TANDA_ABI,
       functionName: 'depositCurrentWeek',
-    });
+      account: address,
+      chain: undefined,
+    } as any);
   };
 
   // Escribir: Depositar semana específica
   const depositForWeek = async (weekIndex: number) => {
+    if (!address) return;
     return depositWrite({
       address: contractAddress,
       abi: TANDA_ABI,
       functionName: 'depositForWeek',
       args: [BigInt(weekIndex)],
-    });
+      account: address,
+      chain: undefined,
+    } as any);
   };
 
   return {
