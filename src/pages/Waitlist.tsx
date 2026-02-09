@@ -7,6 +7,7 @@ import { Mail, CheckCircle, Users, Shield, Coins } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { MexicanEagle } from "@/components/MexicanEagle";
+import { PaperEaglesBackground } from "@/components/PaperEaglesBackground";
 
 export default function Waitlist() {
   const [email, setEmail] = useState("");
@@ -47,6 +48,7 @@ export default function Waitlist() {
     <div className="min-h-screen bg-background mexican-pattern flex flex-col">
       {/* Background effects — same as main platform */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <PaperEaglesBackground />
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-pulse-slow" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[120px] animate-pulse-slow" style={{ animationDelay: "1.5s" }} />
       </div>
