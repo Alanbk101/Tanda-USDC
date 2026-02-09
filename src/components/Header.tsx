@@ -127,7 +127,7 @@ export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
           >
             <Users className="w-4 h-4 text-mexican-green" />
             <span className="hidden sm:inline bg-gradient-to-r from-mexican-green via-foreground to-mexican-red bg-clip-text text-transparent font-semibold">
-              Lista de espera
+              {t("waitlistTitle")}
             </span>
           </Button>
           <Button
