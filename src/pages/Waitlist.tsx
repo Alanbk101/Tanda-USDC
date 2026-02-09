@@ -3,21 +3,23 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Mail, CheckCircle, Users, Shield, Coins } from "lucide-react";
+import { Mail, CheckCircle, Users, Shield, Coins, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { MexicanEagle } from "@/components/MexicanEagle";
 import { PaperEaglesBackground } from "@/components/PaperEaglesBackground";
 import { useSettings } from "@/contexts/SettingsContext";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function Waitlist() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { t } = useSettings();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -35,7 +37,22 @@ export default function Waitlist() {
       return;
     }
 
-    console.log("Waitlist signup:", trimmed);
+    setLoading(true);
+    const { error: dbError } = await supabase
+      .from("waitlist")
+      .insert({ email: trimmed });
+
+    setLoading(false);
+
+    if (dbError) {
+      if (dbError.code === "23505") {
+        setError(t("emailAlreadyRegistered") || "Este email ya está registrado.");
+      } else {
+        setError(t("genericError") || "Ocurrió un error. Intenta de nuevo.");
+      }
+      return;
+    }
+
     setSubmitted(true);
   };
 
@@ -124,7 +141,8 @@ export default function Waitlist() {
                     </div>
                     {error && <p className="text-sm text-destructive animate-fade-in">{error}</p>}
                   </div>
-                  <Button type="submit" variant="gradient" className="w-full hover-scale" size="lg">
+                  <Button type="submit" variant="gradient" className="w-full hover-scale" size="lg" disabled={loading}>
+                    {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                     {t("joinButton")}
                   </Button>
                 </form>
