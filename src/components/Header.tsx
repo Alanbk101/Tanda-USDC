@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { NetworkSelector } from "@/components/NetworkSelector";
 import { SettingsMenu } from "@/components/SettingsMenu";
-import { Wallet, Menu, LayoutDashboard } from "lucide-react";
+import { Wallet, Menu, LayoutDashboard, Users } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSettings } from "@/contexts/SettingsContext";
@@ -113,6 +113,7 @@ export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
   const location = useLocation();
 
   const isDashboard = location.pathname === "/dashboard";
+  const isWaitlist = location.pathname === "/waitlist";
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl relative">
@@ -147,6 +148,17 @@ export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
             <LayoutDashboard className="w-4 h-4 text-mexican-green" />
             <span className="hidden sm:inline bg-gradient-to-r from-mexican-green via-foreground to-mexican-red bg-clip-text text-transparent font-semibold">
               Dashboard
+            </span>
+          </Button>
+          <Button
+            variant={isWaitlist ? "secondary" : "ghost"}
+            size="sm"
+            className="gap-2"
+            onClick={() => navigate("/waitlist")}
+          >
+            <Users className="w-4 h-4 text-mexican-green" />
+            <span className="hidden sm:inline bg-gradient-to-r from-mexican-green via-foreground to-mexican-red bg-clip-text text-transparent font-semibold">
+              Lista de espera
             </span>
           </Button>
           <Button
