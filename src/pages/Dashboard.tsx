@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useTanda } from "@/hooks/useTanda";
 import { useAccount } from "wagmi";
-import { ConnectButton } from "@/components/ConnectButton";
 import { PROTOCOL_CONSTANTS } from "@/config/contracts";
 import { formatUnits } from "viem";
 import {
@@ -87,7 +86,6 @@ export default function Dashboard() {
                 {isConnected ? `${address?.slice(0, 6)}...${address?.slice(-4)}` : "Conecta tu wallet"}
               </p>
             </div>
-            <ConnectButton />
           </div>
 
           {!isConnected && (

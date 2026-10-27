@@ -14,15 +14,18 @@ interface PayoutMonth {
 
 interface PayoutScheduleProps {
   payouts: PayoutMonth[];
+  title?: string;
+  note?: string;
 }
 
-export function PayoutSchedule({ payouts }: PayoutScheduleProps) {
+export function PayoutSchedule({ payouts, title, note }: PayoutScheduleProps) {
   const { t } = useSettings();
 
   return (
     <Card variant="glass" className="animate-fade-in" style={{ animationDelay: "600ms" }}>
       <CardHeader>
-        <CardTitle>{t("payoutRotation")}</CardTitle>
+        <CardTitle>{title ?? t("payoutRotation")}</CardTitle>
+        {note && <p className="text-sm text-muted-foreground">{note}</p>}
       </CardHeader>
       <CardContent>
         <div className="relative">

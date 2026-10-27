@@ -29,7 +29,7 @@ export const ConnectButton = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <Button onClick={openConnectModal} className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                  <Button onClick={openConnectModal} variant="gradient" size="sm">
                     Conectar Wallet
                   </Button>
                 );
@@ -48,7 +48,7 @@ export const ConnectButton = () => {
                   <Button
                     onClick={openChainModal}
                     variant="outline"
-                    className="flex items-center gap-2"
+                    className="hidden sm:flex items-center gap-2"
                   >
                     {chain.hasIcon && (
                       <div
@@ -74,9 +74,9 @@ export const ConnectButton = () => {
 
                   <Button onClick={openAccountModal} variant="outline">
                     {account.displayName}
-                    {account.displayBalance
-                      ? ` (${account.displayBalance})`
-                      : ''}
+                    {account.displayBalance && (
+                      <span className="hidden md:inline">&nbsp;({account.displayBalance})</span>
+                    )}
                   </Button>
                 </div>
               );

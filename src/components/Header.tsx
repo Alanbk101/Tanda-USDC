@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { NetworkSelector } from "@/components/NetworkSelector";
 import { SettingsMenu } from "@/components/SettingsMenu";
-import { Wallet, Menu, LayoutDashboard, Users } from "lucide-react";
-import { useState } from "react";
+import { LayoutDashboard, Users } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSettings } from "@/contexts/SettingsContext";
 
@@ -69,6 +68,7 @@ function NavbarPattern() {
 }
 
 import { MexicanEagle } from "@/components/MexicanEagle";
+import { ConnectButton } from "@/components/ConnectButton";
 
 interface HeaderProps {
   selectedNetwork: "base";
@@ -76,7 +76,6 @@ interface HeaderProps {
 }
 
 export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
-  const [isConnected, setIsConnected] = useState(false);
   const { t } = useSettings();
   const navigate = useNavigate();
   const location = useLocation();
@@ -130,33 +129,11 @@ export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
               {t("waitlistTitle")}
             </span>
           </Button>
-          <Button
-            variant={isConnected ? "outline" : "gradient"}
-            size="sm"
-            onClick={() => setIsConnected(!isConnected)}
-            className="gap-2"
-          >
-            <Wallet className="w-4 h-4" />
-            {isConnected ? (
-              <span className="font-mono">0x7a3d...8f2e</span>
-            ) : (
-              t("connectWallet")
-            )}
-          </Button>
+          <ConnectButton />
           <SettingsMenu />
-          <Button variant="ghost" size="icon" className="md:hidden">
-            <Menu className="w-5 h-5" />
-          </Button>
         </div>
       </div>
       
-      {/* Mobile Network Selector */}
-      <div className="md:hidden border-t border-border/50 p-3">
-        <NetworkSelector
-          selectedNetwork={selectedNetwork}
-          onNetworkChange={onNetworkChange}
-        />
-      </div>
     </header>
   );
 }
