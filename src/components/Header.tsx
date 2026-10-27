@@ -70,12 +70,7 @@ function NavbarPattern() {
 import { MexicanEagle } from "@/components/MexicanEagle";
 import { ConnectButton } from "@/components/ConnectButton";
 
-interface HeaderProps {
-  selectedNetwork: "base";
-  onNetworkChange: (network: "base") => void;
-}
-
-export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
+export function Header() {
   const { t } = useSettings();
   const navigate = useNavigate();
   const location = useLocation();
@@ -100,10 +95,7 @@ export function Header({ selectedNetwork, onNetworkChange }: HeaderProps) {
         </div>
 
         <div className="hidden md:block">
-          <NetworkSelector
-            selectedNetwork={selectedNetwork}
-            onNetworkChange={onNetworkChange}
-          />
+          <NetworkSelector />
         </div>
 
         <div className="flex items-center gap-3">

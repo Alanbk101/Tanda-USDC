@@ -1,143 +1,131 @@
-import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
-import { getContractAddress, getUSDCAddress } from '@/config/contracts';
-import { TANDA_ABI, USDC_ABI } from '@/config/abis';
-import { useAccount, useChainId } from 'wagmi';
+import { useMemo } from "react";
+import { erc20Abi } from "viem";
+import { useAccount, useChainId, useReadContract, useReadContracts } from "wagmi";
+import { TANDA_MANAGER_ABI } from "@/config/tandaManagerAbi";
+import { getNetwork } from "@/config/networks";
+import { toGroup, type TandaGroup, type TandaMember } from "@/lib/tanda";
 
-export function useTanda() {
-  const { address } = useAccount();
+const REFRESH_MS = 15_000;
+/** Cuántas tandas recientes se listan. */
+const MAX_LISTED = 30;
+
+export function useTandaNetwork() {
   const chainId = useChainId();
-  
-  const contractAddress = getContractAddress(chainId);
-  const usdcAddress = getUSDCAddress(chainId);
+  const network = getNetwork(chainId);
+  return { chainId, network, manager: network?.tandaManager };
+}
 
-  // Leer estado del participante
-  const { data: participantStatus, refetch: refetchStatus } = useReadContract({
-    address: contractAddress,
-    abi: TANDA_ABI,
-    functionName: 'getParticipantPaymentStatus',
-    args: address ? [address] : undefined,
-    query: {
-      enabled: !!address,
-    }
+export function useGroups() {
+  const { chainId, manager } = useTandaNetwork();
+
+  const countQuery = useReadContract({
+    address: manager,
+    abi: TANDA_MANAGER_ABI,
+    functionName: "groupCount",
+    chainId,
+    query: { enabled: !!manager, refetchInterval: REFRESH_MS },
   });
 
-  // Leer semana actual
-  const { data: currentWeek } = useReadContract({
-    address: contractAddress,
-    abi: TANDA_ABI,
-    functionName: 'getCurrentWeekIndex',
+  const count = Number(countQuery.data ?? 0n);
+  const ids = useMemo(() => {
+    const list: bigint[] = [];
+    for (let i = count; i >= 1 && list.length < MAX_LISTED; i--) list.push(BigInt(i));
+    return list;
+  }, [count]);
+
+  const groupsQuery = useReadContracts({
+    contracts: ids.map((id) => ({
+      address: manager!,
+      abi: TANDA_MANAGER_ABI,
+      functionName: "getGroup" as const,
+      args: [id] as const,
+      chainId,
+    })),
+    query: { enabled: !!manager && ids.length > 0, refetchInterval: REFRESH_MS },
   });
 
-  // Leer mes actual
-  const { data: currentMonth } = useReadContract({
-    address: contractAddress,
-    abi: TANDA_ABI,
-    functionName: 'getCurrentMonthIndex',
-  });
-
-  // Leer allowance de USDC
-  const { data: allowance, refetch: refetchAllowance } = useReadContract({
-    address: usdcAddress,
-    abi: USDC_ABI,
-    functionName: 'allowance',
-    args: address ? [address, contractAddress] : undefined,
-    query: {
-      enabled: !!address,
-    }
-  });
-
-  // Leer balance de USDC
-  const { data: usdcBalance } = useReadContract({
-    address: usdcAddress,
-    abi: USDC_ABI,
-    functionName: 'balanceOf',
-    args: address ? [address] : undefined,
-    query: {
-      enabled: !!address,
-    }
-  });
-
-  // Escribir: Aprobar USDC
-  const { 
-    writeContract: approveWrite, 
-    data: approveHash,
-    isPending: isApprovePending 
-  } = useWriteContract();
-
-  const { isLoading: isApproveConfirming } = useWaitForTransactionReceipt({
-    hash: approveHash,
-  });
-
-  const approveUSDC = async (amount: bigint) => {
-    if (!address) return;
-    return approveWrite({
-      address: usdcAddress,
-      abi: USDC_ABI,
-      functionName: 'approve',
-      args: [contractAddress, amount],
-      account: address,
-      chain: undefined,
-    } as any);
-  };
-
-  // Escribir: Depositar semana actual
-  const { 
-    writeContract: depositWrite, 
-    data: depositHash,
-    isPending: isDepositPending 
-  } = useWriteContract();
-
-  const { isLoading: isDepositConfirming } = useWaitForTransactionReceipt({
-    hash: depositHash,
-  });
-
-  const depositCurrentWeek = async () => {
-    if (!address) return;
-    return depositWrite({
-      address: contractAddress,
-      abi: TANDA_ABI,
-      functionName: 'depositCurrentWeek',
-      account: address,
-      chain: undefined,
-    } as any);
-  };
-
-  // Escribir: Depositar semana específica
-  const depositForWeek = async (weekIndex: number) => {
-    if (!address) return;
-    return depositWrite({
-      address: contractAddress,
-      abi: TANDA_ABI,
-      functionName: 'depositForWeek',
-      args: [BigInt(weekIndex)],
-      account: address,
-      chain: undefined,
-    } as any);
-  };
+  const groups: TandaGroup[] = useMemo(
+    () =>
+      (groupsQuery.data ?? []).flatMap((r, i) =>
+        r.status === "success" ? [toGroup(ids[i], r.result as readonly unknown[])] : [],
+      ),
+    [groupsQuery.data, ids],
+  );
 
   return {
-    // Datos
-    participantStatus: participantStatus as [boolean, bigint, bigint, bigint, boolean] | undefined,
-    currentWeek: currentWeek ? Number(currentWeek) : 0,
-    currentMonth: currentMonth ? Number(currentMonth) : 0,
-    allowance: allowance as bigint | undefined,
-    usdcBalance: usdcBalance as bigint | undefined,
-    
-    // Acciones
-    approveUSDC,
-    depositCurrentWeek,
-    depositForWeek,
-    
-    // Estados de carga
-    isApprovePending: isApprovePending || isApproveConfirming,
-    isDepositPending: isDepositPending || isDepositConfirming,
-    
-    // Refetch
-    refetchStatus,
-    refetchAllowance,
-    
-    // Addresses
-    contractAddress,
-    usdcAddress,
+    count,
+    groups,
+    isLoading: countQuery.isLoading || (ids.length > 0 && groupsQuery.isLoading),
+    error: countQuery.error ?? groupsQuery.error,
   };
+}
+
+export function useOwner() {
+  const { chainId, manager } = useTandaNetwork();
+  const { address } = useAccount();
+  const { data: owner } = useReadContract({
+    address: manager,
+    abi: TANDA_MANAGER_ABI,
+    functionName: "owner",
+    chainId,
+    query: { enabled: !!manager },
+  });
+  const isAdmin = !!owner && !!address && owner.toLowerCase() === address.toLowerCase();
+  return { owner, isAdmin };
+}
+
+export function useMember(groupId: bigint | undefined) {
+  const { chainId, manager } = useTandaNetwork();
+  const { address } = useAccount();
+  const q = useReadContract({
+    address: manager,
+    abi: TANDA_MANAGER_ABI,
+    functionName: "getMember",
+    args: groupId !== undefined && address ? [groupId, address] : undefined,
+    chainId,
+    query: { enabled: !!manager && !!address && groupId !== undefined, refetchInterval: REFRESH_MS },
+  });
+  const raw = q.data as
+    | {
+        invited: boolean;
+        joined: boolean;
+        defaulted: boolean;
+        received: boolean;
+        turn: number;
+        periodsPaid: number;
+        collateralLeft: bigint;
+        debt: bigint;
+        owedToMe: bigint;
+        claimable: bigint;
+      }
+    | undefined;
+  const member: TandaMember | undefined = raw
+    ? {
+        invited: raw.invited,
+        joined: raw.joined,
+        defaulted: raw.defaulted,
+        received: raw.received,
+        turn: Number(raw.turn),
+        periodsPaid: Number(raw.periodsPaid),
+        collateralLeft: BigInt(raw.collateralLeft),
+        debt: BigInt(raw.debt),
+        owedToMe: BigInt(raw.owedToMe),
+        claimable: BigInt(raw.claimable),
+      }
+    : undefined;
+  return { member, isLoading: q.isLoading };
+}
+
+export function useUsdcBalance() {
+  const { chainId, network } = useTandaNetwork();
+  const { address } = useAccount();
+  const { data } = useReadContract({
+    address: network?.usdc,
+    abi: erc20Abi,
+    functionName: "balanceOf",
+    args: address ? [address] : undefined,
+    chainId,
+    query: { enabled: !!network && !!address, refetchInterval: REFRESH_MS },
+  });
+  return data;
 }

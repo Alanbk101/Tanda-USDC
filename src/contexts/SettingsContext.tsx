@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { HAS_MAINNET_DEPLOYMENT } from "@/config/networks";
 
 export type Language = "en" | "es" | "fr" | "el";
 
@@ -369,7 +370,8 @@ const SettingsContext = createContext<SettingsContextType | undefined>(undefined
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
   const [darkMode, setDarkModeState] = useState(false);
-  const [testnetMode, setTestnetMode] = useState(false);
+  // Mientras no haya contrato en mainnet, la app arranca mostrando testnets.
+  const [testnetMode, setTestnetMode] = useState(!HAS_MAINNET_DEPLOYMENT);
   const [language, setLanguage] = useState<Language>("es");
   const [watchWallet, setWatchWallet] = useState("");
 

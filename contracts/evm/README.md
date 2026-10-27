@@ -63,6 +63,20 @@ forge script script/Tanda.s.sol:CreateTanda --rpc-url base_sepolia --account <tu
 forge script script/Tanda.s.sol:RevealTanda --rpc-url base_sepolia --account <tu-keystore> --broadcast
 ```
 
+### Conectar la página
+
+Pega la dirección desplegada en `src/config/deployments.ts`, en la línea de esa red, y haz merge. El dashboard la detecta sola. Si el ABI cambia, corre `npm run export-abi` aquí para actualizar `src/config/tandaManagerAbi.ts`.
+
+### Probar la app en local (sin testnet)
+
+```bash
+anvil                                   # en otra terminal
+forge script script/LocalDev.s.sol:LocalDev --rpc-url http://127.0.0.1:8545 --broadcast \
+  --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+```
+
+El script imprime 4 variables `VITE_...`. Pégalas en `.env.local` en la raíz del proyecto y corre `npm run dev`. En tu wallet importa las cuentas de prueba de anvil y agrega la red `http://127.0.0.1:8545` (chainId 31337). La cuenta 0 es la admin y las 10 primeras tienen 1,000 USDC de prueba.
+
 ## Antes de mainnet
 
 - Hacer una ronda real completa en testnet con personas de verdad.

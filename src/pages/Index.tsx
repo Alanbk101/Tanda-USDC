@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { PoolStats } from "@/components/PoolStats";
@@ -12,7 +11,6 @@ import { useSettings } from "@/contexts/SettingsContext";
 import { PROTOCOL_CONSTANTS } from "@/config/contracts";
 
 const Index = () => {
-  const [selectedNetwork, setSelectedNetwork] = useState<"base">("base");
   const { t } = useSettings();
   const navigate = useNavigate();
 
@@ -39,7 +37,7 @@ const Index = () => {
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[120px] animate-pulse-slow" style={{ animationDelay: "1.5s" }} />
       </div>
 
-      <Header selectedNetwork={selectedNetwork} onNetworkChange={setSelectedNetwork} />
+      <Header />
 
       <main className="container px-4 py-8 relative">
         {/* Hero */}
